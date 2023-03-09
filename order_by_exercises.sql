@@ -31,15 +31,14 @@ from employees
 where last_name like ('E%')
 	and last_name like ('%e')
 order by emp_no;
--- 899, 10021, Ramazi Erde,Tadahiro Erde
+-- 899, 10021, Ramazi Erde,49946,Tadahiro Erde
     
 -- Q6    
 select distinct first_name, last_name, hire_date, birth_date
 from employees
-where last_name like ('E%')
-	and last_name not like ('%e')
-order by hire_date desc, birth_date asc;
--- 1000, Phillip Eppinger, Oldest Vidar Eppinger
+where last_name like 'e%e'
+order by hire_date desc;
+-- 899, Teiji Eldridge
 
  -- Q7
  select first_name, last_name, birth_date, hire_date
