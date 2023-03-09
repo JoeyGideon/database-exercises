@@ -14,9 +14,9 @@ limit 10;
  from employees
  where birth_date like ('%12-25')
 	and hire_date like ('199%')
-order by hire_date desc
+order by hire_date
 limit 5;
--- Q3. Khun,Elvis,Sachar,Moto,Ulf
+-- Q3. Alselm,Utz,Bouchung,Baocai,Petter
 
 -- Q4
  select first_name, last_name, birth_date, hire_date
