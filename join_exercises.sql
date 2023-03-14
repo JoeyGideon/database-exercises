@@ -8,6 +8,7 @@ from roles;
 
 select *
 from users;
+
 -- Q2
 select *
 from users
@@ -20,10 +21,11 @@ from users
 right join roles on users.id = roles.id;
 
 -- Q3 
-select roles.id as list_of_roles, count(*)
+select roles.name as role_name, 
+count(users.name) as number_of_emps
 from users
-join roles on users.id = roles.id
-group by roles.id;
+right join roles on users.role_id = roles.id
+group by role_name;
 
 -- Q1 Employee Database
 use employees;
@@ -36,29 +38,30 @@ select * from dept_emp limit 10;
 select * from employees limit 10;
 select * from dept_manager limit 10;
 
-select concat(e.first_name,' ',e.last_name) as full_name, d.dept_name
+select d.dept_name as 'Department Name', concat(e.first_name,' ',e.last_name) as 'Department Manager'
 from employees as e
 join dept_manager as dm
 on dm.emp_no = e.emp_no
 join departments as d
 on d.dept_no = dm.dept_no
 where dm.to_date > now()
-;
+order by d.dept_name asc;
 
 -- Q3
 
-select concat(e.first_name, ' ', e.last_name) as Manager_Name, dept_name
+select dept_name as 'Department Name', concat(e.first_name, ' ', e.last_name) as Manager_Name
 from dept_manager as dm
 join employees as e
 on dm.emp_no = e.emp_no
 join departments as d
 on d.dept_no = dm.dept_no
 where dm.to_date > now()
-and e.gender = 'F';
+and e.gender = 'F'
+order by dept_name;
 
 -- Q4 
 
-select t.title , count(*)
+select t.title as Title , count(*) as Count
 from titles as t
 join employees as e
 on t.emp_no = e.emp_no
@@ -101,14 +104,17 @@ order by d.dept_no
 
 -- Q7
 
-select d.dept_name, avg(s.salary)
-from salaries as s
-join dept_emp as de
-on s.to_date = de.to_date
-join departments as d
-on de.dept_no = d.dept_no
-where s.to_date > now()
-group by d.dept_name;
+select d.dept_name,
+round(avg(s.salary),2) as average_salary
+from dept_emp as de
+join salaries as s 
+on de.emp_no = s.emp_no
+and de.to_date > curdate()
+and s.to_date> curdate()
+join departments as d using(dept_no)
+group by d.dept_name
+order by average_salary desc
+limit 1;
 
 -- Q8
 
@@ -149,7 +155,26 @@ join salaries as s
 on de.emp_no = s.emp_no
 group by d.dept_name;
 
--- Bonus 1 
+select d.dept_name, round(avg(s.salary),0) as average_salary
+from departments as d
+join dept_emp as de using(dept_no)
+join salaries as s using (emp_no)
+group by d.dept_name;
+-- keeps timing out so I can't see the output
+
+-- Bonus (unfinished)
+
+select concat(e.first_name,' ', e.last_name) as 'Employee Name', d.dept_name as 'Department Name', 
+concat(e.first_name,' ',e.last_name) as 'Manager Name'
+from dept_emp as de
+join employees as e
+on de.emp_no = e.emp_no
+join dept_manager as dm
+on e.emp_no = dm.emp_no
+join departments as d
+on dm.dept_no = d.dept_no
+where de.to_date > now()
+;
 
 
 
