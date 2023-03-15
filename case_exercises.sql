@@ -22,7 +22,7 @@ from employees;
 
 select  concat(e.first_name,' ', e.last_name) as Employee, de.dept_no, e.hire_date, de.to_date,
 	CASE
-		when de.to_date = '9999-01-01' then True
+		when de.to_date > curdate() then True
         else False
 	end as is_current_employee
 from employees as e
@@ -41,17 +41,14 @@ select concat(e.first_name,' ', e.last_name) as Employee,
     end as alpha_group
 from employees as e
 ;
+-- I know my code is extra :D could have used case when left(last_name,1) >= 'H' and so forth...
 
 -- Q3
 
 select 
 CASE
-when birth_date like '194%' then "40's"
 when birth_date like '195%' then "50's"
 when birth_date like '196%' then "60's"
-when birth_date like '197%' then "70's"
-when birth_date like '198%' then "80's"
-when birth_date like '199%' then "90's"
 else "Dead"
 end as Decades, count(*)
 from employees
@@ -64,6 +61,8 @@ SELECT round(avg(s.salary),2) as Avg_Salary,
        WHEN d.dept_name IN ('research', 'development') THEN 'R&D'
        WHEN d.dept_name IN ('sales', 'marketing') THEN 'Sales & Marketing'
        WHEN d.dept_name IN ('Production', 'Quality Management') THEN 'Prod & QM'
+       WHEN d.dept_name IN ('Finance','Human Resources') THEN 'Finance & HR'
+	   WHEN d.dept_name IN ('Customer Service') THEN 'Customer Service'
        ELSE d.dept_name
    END AS dept_group
 FROM departments as d
